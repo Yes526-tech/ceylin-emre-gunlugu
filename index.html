@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#fff5f7">
+  
+  <!-- iPhone & iOS Native PWA Web App Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="C&E Günlüğü">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icon-180.png">
+  <link rel="apple-touch-icon" href="assets/icon-180.png">
+
+  <title>C&E'nin Günlüğü | Ceylin & Emre</title>
+  
+  <!-- Favicon using one of our hand-drawn hearts -->
+  <link rel="icon" type="image/svg+xml" href="assets/hearts/1.svg">
+
+  <!-- Google Fonts: Editorial Serif, Clean Sans, and Authentic Handwriting -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/style.css?v=5.0">
+
+  <!-- Netlify HUD / "Powered by Netlify" Badge Blocker -->
+  <style>
+    #nl-badge-frame,
+    iframe[title*="Netlify"],
+    iframe[title*="Powered by Netlify"],
+    iframe[style*="2147483645"],
+    iframe[style*="2147483647"],
+    [data-nf-variant],
+    netlify-drawer,
+    #netlify-drawer,
+    div[data-netlify-deploy-id],
+    div[style*="2147483645"],
+    div[style*="2147483647"] {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      max-width: 0 !important;
+      max-height: 0 !important;
+      position: absolute !important;
+      top: -9999px !important;
+      left: -9999px !important;
+      z-index: -99999 !important;
+    }
+  </style>
+  <script>
+    (function() {
+      function eradicateNetlifyBadge() {
+        try {
+          // Remove injected script tag or remove its dataset
+          document.querySelectorAll('script[data-nf-variant]').forEach(function(s) {
+            delete s.dataset.nfVariant;
+            s.remove();
+          });
+          // Remove injected iframe or containers
+          var selectors = [
+            '#nl-badge-frame',
+            'iframe[title*="Netlify"]',
+            'iframe[title*="Powered by Netlify"]',
+            'iframe[style*="2147483645"]',
+            'iframe[style*="2147483647"]',
+            'netlify-drawer',
+            '#netlify-drawer',
+            '[data-nf-variant]'
+          ];
+          selectors.forEach(function(sel) {
+            document.querySelectorAll(sel).forEach(function(el) {
+              el.remove();
+            });
+          });
+          // Remove any element with zIndex >= 2147483640
+          document.querySelectorAll('body > iframe, body > div').forEach(function(el) {
+            var z = window.getComputedStyle(el).zIndex;
+            if (parseInt(z, 10) >= 2000000000) {
+              el.remove();
+            }
+          });
+        } catch(e) {}
+      }
+      eradicateNetlifyBadge();
+      if (typeof MutationObserver !== 'undefined' && document.documentElement) {
+        var obs = new MutationObserver(eradicateNetlifyBadge);
+        obs.observe(document.documentElement, { childList: true, subtree: true });
+      }
+      window.addEventListener('DOMContentLoaded', eradicateNetlifyBadge);
+      window.addEventListener('load', eradicateNetlifyBadge);
+      setInterval(eradicateNetlifyBadge, 250);
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- Floating Hearts Background Canvas -->
+  <canvas id="hearts-canvas"></canvas>
+
+  <!-- ==========================================================================
+       PASSWORD LOCK SCREEN (Şifre: 24042008)
+       ========================================================================== -->
+  <div id="lock-screen" class="lock-screen">
+    <div id="lock-card" class="lock-card">
+      <div class="lock-icon-wrap">
+        <img src="assets/hearts/1.svg" alt="Love Heart" class="lock-heart-img">
+      </div>
+      <h1 class="lock-title">C&amp;E'NİN GÜNLÜĞÜ</h1>
+      <p class="lock-subtitle">Bizim masalımıza adım atmak için aşkımızın en özel şifresini yaz...</p>
+      
+      <div class="lock-input-group">
+        <input 
+          type="password" 
+          id="lock-password" 
+          class="lock-input" 
+          placeholder="••••••••" 
+          maxlength="8" 
+          inputmode="numeric"
+          pattern="[0-9]*"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          autofocus
+        >
+      </div>
+
+      <button id="lock-submit-btn" class="lock-btn" type="button">
+        <span>Kalbi Aç</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </button>
+
+      <div id="lock-error" class="lock-error">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+        </svg>
+        <span>Hatalı şifre bir tanem! Özel tarihimizi hatırla...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Background Romantic Audio Player -->
+  <audio id="romantic-audio" preload="auto" loop playsinline webkit-playsinline style="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0.01;pointer-events:none;">
+    <source src="assets/music/ay_tenli_kadin.mp3" type="audio/mpeg">
+    <source src="assets/music/ay_tenli_kadin.mp3" type="audio/mp3">
+  </audio>
+
+  <!-- ==========================================================================
+       TOP FIXED HEADER
+       ========================================================================== -->
+  <header class="top-header">
+    <a href="#hero" class="brand">
+      <img src="assets/hearts/15.svg" alt="Heart" class="brand-icon">
+      <div class="brand-name">C&amp;E <span>'NİN GÜNLÜĞÜ</span></div>
+    </a>
+
+    <div class="header-right-wrap">
+      <!-- Minimal Romantic Hamburger Menu Button (Sağ Üst Sadeleştirilmiş Buton) -->
+      <button id="header-hamburger-btn" class="header-hamburger-btn" type="button" aria-label="Menüyü Aç" aria-expanded="false" title="Menü">
+        <span class="hamburger-line line-1"></span>
+        <span class="hamburger-line line-2"></span>
+        <span class="hamburger-line line-3"></span>
+      </button>
+
+      <!-- Romantic Flyout Menu Dropdown -->
+      <div id="header-dropdown-menu" class="header-dropdown-menu" aria-hidden="true">
+        <div class="dropdown-menu-header">
+          <div class="dropdown-menu-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <span>C&amp;E Özel Menü</span>
+          </div>
+          <button type="button" id="header-dropdown-close" class="dropdown-close-btn" aria-label="Kapat" title="Kapat">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+
+        <!-- Dynamic Mini Stats Badges Strip -->
+        <div class="menu-dynamic-stats-strip" id="menu-stats-strip">
+          <span class="menu-stat-chip" id="menu-stat-pill-memories">📸 <strong id="chip-memories-num">0</strong> Anı</span>
+          <span class="menu-stat-chip" id="menu-stat-pill-sipsak">⚡ <strong id="chip-sipsak-num">0</strong> Şipşak</span>
+          <span class="menu-stat-chip" id="menu-stat-pill-diary">💌 <strong id="chip-diary-num">0</strong> Not</span>
+          <span class="menu-stat-chip" id="menu-stat-pill-notebook">📖 <strong id="chip-notebook-num">0</strong> Sayfa</span>
+          <span class="menu-stat-chip" id="menu-stat-pill-bucket">🎯 <strong id="chip-bucket-num">0/0</strong></span>
+        </div>
+
+        <div class="dropdown-menu-list">
+          <!-- 1. Anılarımız (Dynamic Counter & Scroll) -->
+          <button type="button" id="menu-nav-memories" class="dropdown-item">
+            <div class="dropdown-item-icon memories">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+            <div class="dropdown-item-text">
+              <div class="item-title">Anılarımız &amp; Fotoğraflar</div>
+              <div class="item-subtitle" id="menu-memories-desc">Albüme kayıtlı aşk anılarımız</div>
+            </div>
+            <span class="menu-item-badge" id="menu-memories-badge">0 Anı</span>
+          </button>
+
+          <!-- 2. Şipşak Anlarımız (Dynamic Sipsak Modal Opener) -->
+          <button type="button" id="menu-nav-sipsak" class="dropdown-item">
+            <div class="dropdown-item-icon sipsak">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+            </div>
+            <div class="dropdown-item-text">
+              <div class="item-title">Şipşak Anlarımız</div>
+              <div class="item-subtitle" id="menu-sipsak-desc">Anlık çekilen aşk fotoğrafları</div>
+            </div>
+            <span class="menu-item-badge" id="menu-sipsak-badge">0 Şipşak</span>
+          </button>
+
+          <!-- 3. Özel Hatıra Notları -->
+          <button type="button" id="menu-nav-diary" class="dropdown-item">
+            <div class="dropdown-item-icon diary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            </div>
+            <div class="dropdown-item-text">
+              <div class="item-title">Özel Hatıra Notları</div>
+              <div class="item-subtitle" id="menu-diary-desc">Kalpten kalbe aşk notlarımız</div>
+            </div>
+            <span class="menu-item-badge" id="menu-diary-badge">0 Not</span>
+          </button>
+
+          <!-- 4. Pembe Anı Defteri -->
+          <button type="button" id="menu-nav-notebook" class="dropdown-item">
+            <div class="dropdown-item-icon notebook">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+            </div>
+            <div class="dropdown-item-text">
+              <div class="item-title">Pembe Anı Defterimiz</div>
+              <div class="item-subtitle" id="menu-notebook-desc">Sayfalar dolusu ortak günlüğümüz</div>
+            </div>
+            <span class="menu-item-badge" id="menu-notebook-badge">0 Sayfa</span>
+          </button>
+
+          <!-- 5. Hayal Listesi -->
+          <button type="button" id="menu-nav-bucket" class="dropdown-item">
+            <div class="dropdown-item-icon bucket">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </div>
+            <div class="dropdown-item-text">
+              <div class="item-title">Hayal &amp; Hedef Listemiz</div>
+              <div class="item-subtitle" id="menu-bucket-desc">Birlikte gerçekleştireceğimiz hedefler</div>
+            </div>
+            <span class="menu-item-badge" id="menu-bucket-badge">0/0</span>
+          </button>
+
+          <!-- 6. Romantik Melodi (Canlı Şarkı Adı & Çal/Durdur) -->
+          <button type="button" id="menu-music-btn" class="dropdown-item">
+            <div class="dropdown-item-icon music">
+              <svg id="menu-music-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+            </div>
+            <div class="dropdown-item-text">
+              <div class="item-title" id="menu-music-title">Romantik Melodi</div>
+              <div class="item-subtitle" id="menu-music-desc">Yalın - Ay Tenli Kadın</div>
+            </div>
+            <span class="menu-item-badge" id="menu-music-badge">▶ Çalıyor</span>
+          </button>
+
+          <!-- 7. Aşk Çalma Listemiz (Spotify) -->
+          <a href="playlist.html" target="_blank" id="menu-playlist-btn" class="dropdown-item">
+            <div class="dropdown-item-icon spotify">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><path d="M8 11.5c3.5-1 7.5-.5 10 1"></path><path d="M9 14.5c2.5-.7 5.5-.3 7.5.8"></path><path d="M7.5 8.5c4-1.2 8.5-.6 11.5 1.2"></path></svg>
+            </div>
+            <div class="dropdown-item-text">
+              <div class="item-title">Aşk Çalma Listemiz (Spotify)</div>
+              <div class="item-subtitle">Özel pembe şarkı çalarımız</div>
+            </div>
+            <span class="menu-item-badge" style="background:rgba(34,197,94,0.12); color:#16a34a;">Aç ↗</span>
+          </a>
+
+          <!-- 8. Hızlı Yeni Anı / Fotoğraf Ekle -->
+          <button type="button" id="menu-add-memory-btn" class="dropdown-item">
+            <div class="dropdown-item-icon add">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </div>
+            <div class="dropdown-item-text">
+              <div class="item-title">Yeni Anı / Fotoğraf Ekle</div>
+              <div class="item-subtitle">Albüme yeni anılar yükle</div>
+            </div>
+          </button>
+
+          <!-- 9. Canlı Senkronize Et -->
+          <button type="button" id="menu-sync-btn" class="dropdown-item">
+            <div class="dropdown-item-icon sync">
+              <svg id="menu-sync-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+            </div>
+            <div class="dropdown-item-text">
+              <div class="item-title">Canlı Eşitle (Senkronize)</div>
+              <div class="item-subtitle" id="menu-sync-desc">Bulut: Canlı Eşitlendi</div>
+            </div>
+            <span class="menu-item-badge" id="menu-sync-badge" style="background:rgba(16,185,129,0.12); color:#10b981;">🟢 Canlı</span>
+          </button>
+
+          <!-- 10. iPhone Uygulaması Yap (PWA Install Helper) -->
+          <button type="button" id="menu-pwa-install-btn" class="dropdown-item">
+            <div class="dropdown-item-icon iphone">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="2" width="14" height="20" rx="3" ry="3"></rect><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"></line></svg>
+            </div>
+            <div class="dropdown-item-text">
+              <div class="item-title">iPhone Uygulaması Yap</div>
+              <div class="item-subtitle">Ana ekrana uygulama olarak ekle</div>
+            </div>
+            <span class="menu-item-badge" style="background:rgba(244,63,94,0.12); color:var(--primary);">iOS</span>
+          </button>
+
+          <!-- 11. Günlüğü Kilitle -->
+          <button type="button" id="menu-lock-btn" class="dropdown-item">
+            <div class="dropdown-item-icon lock">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </div>
+            <div class="dropdown-item-text">
+              <div class="item-title">Günlüğü Kilitle</div>
+              <div class="item-subtitle">Şifre ve Face ID ekranına dön</div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Global Backdrop for closing dropdown on outside click -->
+  <div id="header-menu-backdrop" class="header-menu-backdrop"></div>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="container">
+
+    <!-- ==========================================================================
+         SECTION 1: HERO & LIVE LOVE COUNTER
+         ========================================================================== -->
+    <section id="hero" class="hero-section">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <img src="assets/hearts/10.svg" alt="Heart" class="hero-badge-heart">
+            <span>Ceylin &amp; Emre'nin Masalı</span>
+          </div>
+
+          <h1 class="hero-title">
+            Bizim Sevgi Dolu <span class="cursive">C&amp;E'nin Günlüğü</span>
+          </h1>
+
+          <p class="hero-quote">
+            "Seninle başlayan bu masal, hayatımızın en değerli hediyesi. Ceylin &amp; Emre'nin her anı aşkla yazılan ortak hikayesi..."
+          </p>
+
+          <!-- Real-Time Live Love Counter -->
+          <div class="counter-box">
+            <div class="counter-header">
+              <span class="counter-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Birlikte Geçen Her An
+              </span>
+              <span class="counter-date">27.09.2026</span>
+            </div>
+
+            <div class="counter-grid">
+              <div class="counter-item">
+                <span id="counter-days" class="counter-num">0</span>
+                <span class="counter-unit">Gün</span>
+              </div>
+              <div class="counter-item">
+                <span id="counter-hours" class="counter-num">00</span>
+                <span class="counter-unit">Saat</span>
+              </div>
+              <div class="counter-item">
+                <span id="counter-mins" class="counter-num">00</span>
+                <span class="counter-unit">Dakika</span>
+              </div>
+              <div class="counter-item">
+                <span id="counter-secs" class="counter-num">00</span>
+                <span class="counter-unit">Saniye</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-actions">
+            <a href="#diary" class="btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              <span>Günlüğü Keşfet</span>
+            </a>
+            <a href="#gallery" class="btn-secondary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span>Anılarımıza Bak</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Hero Polaroid Showcase -->
+        <div class="hero-visual">
+          <div class="polaroid-hero">
+            <div class="washi-tape"></div>
+            <div class="polaroid-img-wrap" id="hero-img-wrap" title="Fotoğrafı Değiştirmek İçin Tıkla">
+              <img id="hero-img" src="assets/images/hero.jpg" alt="Ceylin & Emre" fetchpriority="high" decoding="async">
+              <button type="button" id="hero-change-btn" class="hero-change-btn" title="Ana Fotoğrafı Değiştir">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                <span>Fotoğrafı Değiştir</span>
+              </button>
+              <input type="file" id="hero-file-input" accept="image/*" style="display:none;">
+            </div>
+            <div class="polaroid-caption">Ceylin &amp; Emre</div>
+            <img src="assets/hearts/7.svg" alt="Heart Doodle" class="hero-doodle-heart">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 2: PINK LINED NOTEBOOK (ANI DEFTERİ)
+         ========================================================================== -->
+    <section id="diary">
+      <div class="section-header">
+        <span class="section-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          Gün Gün Bizim Hikayemiz
+        </span>
+        <h2 class="section-title">C&amp;E Anı Defteri</h2>
+        <p class="section-subtitle">Pembe çizgili sayfalarında her günümüzü, paylaştığımız tatlı anları el ele yazdığımız özel defterimiz...</p>
+      </div>
+
+      <!-- The Pink Lined Notebook Component -->
+      <div class="notebook-wrapper">
+        <!-- Spiral Ring Header -->
+        <div class="notebook-spiral-header">
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+          <span class="spiral-ring"></span>
+        </div>
+
+        <!-- The Pink Lined Sheet -->
+        <div class="pink-notebook-sheet">
+          <!-- Corner Heart Doodle Stamp -->
+          <img src="assets/hearts/7.svg" alt="Heart Doodle" class="notebook-corner-doodle">
+
+          <!-- Top Meta Bar: Date on Left & İçindekiler on Right -->
+          <div class="notebook-meta-bar">
+            <div class="notebook-date-wrap">
+              <span class="notebook-date-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span id="notebook-date-display"></span>
+              </span>
+            </div>
+
+            <!-- Sağ Tarafta İçindekiler Butonu -->
+            <button 
+              type="button" 
+              id="notebook-toc-btn" 
+              class="notebook-toc-btn" 
+              onclick="window.openTableOfContents && window.openTableOfContents(event)"
+              title="Tüm defter sayfalarını ve fihristi göster"
+            >
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              <span>İçindekiler</span>
+              <span id="toc-count-badge" class="toc-count-pill">0</span>
+            </button>
+          </div>
+
+          <!-- Title Input -->
+          <input 
+            type="text" 
+            id="notebook-title" 
+            class="notebook-title-input" 
+            placeholder="Günün Başlığı... (Örn: Bugün Birlikte Geçirdiğimiz O Güzel An)"
+          >
+
+          <!-- Voice & Speech-to-Text Romantic Bar -->
+          <div class="notebook-voice-bar">
+            <button type="button" id="notebook-speech-btn" class="notebook-tool-btn" title="Konuşarak Yazdır (Sesten Yazıya)">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+              <span id="notebook-speech-label">Sesten Yazıya</span>
+            </button>
+
+            <button type="button" id="notebook-voice-record-btn" class="notebook-tool-btn" title="Bu Sayfaya Sesli Not Kaydet">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
+              <span id="notebook-voice-label">Sesli Not Kaydet</span>
+            </button>
+
+            <!-- Recording Active Status Box -->
+            <div id="notebook-voice-recording-status" class="voice-recording-status" style="display:none;">
+              <span class="rec-pulse-dot"></span>
+              <span id="notebook-rec-time" class="rec-time-text">00:00</span>
+              <button type="button" id="notebook-rec-stop-btn" class="rec-btn-stop" title="Kaydı Bitir ve Sayfaya Ekle">Kaydı Bitir</button>
+              <button type="button" id="notebook-rec-cancel-btn" class="rec-btn-cancel" title="İptal Et">✕</button>
+            </div>
+          </div>
+
+          <!-- Cute Pink Audio Player Wrap (Sayfada ses kaydı varsa gösterilir) -->
+          <div id="notebook-audio-player-wrap" class="notebook-audio-player-wrap" style="display:none;">
+            <div class="cute-audio-player">
+              <button type="button" id="notebook-audio-play-btn" class="cute-play-btn" title="Ses Kaydını Dinle">
+                <svg id="notebook-play-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <svg id="notebook-pause-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+              </button>
+              <div class="cute-audio-info">
+                <div class="cute-audio-header">
+                  <span class="cute-audio-title">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+                    Özel Sesli Hatıra Notumuz
+                  </span>
+                  <div class="cute-audio-time">
+                    <span id="notebook-audio-cur-time">0:00</span> / <span id="notebook-audio-total-time">0:00</span>
+                  </div>
+                </div>
+                <div class="cute-progress-bar-wrap" id="notebook-audio-track">
+                  <div id="notebook-audio-progress" class="cute-progress-fill" style="width: 0%;"></div>
+                </div>
+              </div>
+              <button type="button" id="notebook-audio-del-btn" class="cute-audio-del-btn" title="Ses Kaydını Sil">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </button>
+            </div>
+            <audio id="notebook-page-audio" preload="metadata" style="display:none;"></audio>
+          </div>
+
+          <!-- Ruled Lined Textarea -->
+          <textarea 
+            id="notebook-content" 
+            class="notebook-lined-textarea" 
+            placeholder="Sevgilim, bugün Ceylin & Emre olarak neler yaptık? Neler hissettik, nereye gittik, günün en tatlı anı neydi? Hepsini bu pembe sayfalara dökelim..."
+          ></textarea>
+
+          <!-- Bottom Actions -->
+          <div class="notebook-actions-bar">
+            <div class="notebook-btn-group">
+              <button type="button" id="notebook-save-btn" class="btn-primary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                <span>Bu Günü Deftere Kaydet</span>
+              </button>
+
+              <button type="button" id="notebook-new-btn" class="btn-secondary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Yeni Sayfa Aç</span>
+              </button>
+            </div>
+
+            <div class="notebook-right-status">
+              <span id="notebook-status-msg" class="notebook-status-msg">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Sayfa defterimize eklendi!</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Milestone Memory Cards (Preserved) -->
+      <div style="text-align:center; margin: 40px auto 20px;">
+        <h3 style="font-family:var(--font-serif); font-size:1.6rem; color:var(--text-dark); margin-bottom:8px;">Özel Hatıra Notlarımız</h3>
+        <p style="font-size:0.92rem; color:var(--text-muted);">Aşkımızın dönüm noktaları ve unutulmaz anları</p>
+      </div>
+
+      <!-- Diary Grid (Dinamik olarak yüklenir & üstüne tıklanınca düzenleme/silme seçenekleri görünür) -->
+      <div id="diary-grid" class="diary-grid">
+        <!-- Rendered dynamically by initDiaryEntries() -->
+      </div>
+
+      <!-- Add New Diary Entry Trigger -->
+      <div class="add-diary-wrap">
+        <button id="open-add-diary-btn" class="btn-secondary" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>Yeni Bir Anı / Günlük Notu Yaz</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 3: PHOTO GALLERY & POLAROIDS
+         ========================================================================== -->
+    <section id="gallery">
+      <div class="section-header">
+        <span class="section-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          Ölümsüz Anlar
+        </span>
+        <h2 class="section-title">Fotoğraf Albümümüz</h2>
+        <p class="section-subtitle">Zamanı durdurduğumuz, gülümsemelerimizin birbirine karıştığı en tatlı anılarımız...</p>
+      </div>
+
+      <!-- Polaroid Cards Grid (Rendered dynamically: Son eklenen 3 anı) -->
+      <div id="gallery-grid" class="gallery-grid">
+        <!-- Populated dynamically by initGallery() -->
+      </div>
+
+      <!-- Albüme Git Butonu -->
+      <div class="gallery-album-btn-wrap" style="text-align: center; margin-top: 32px;">
+        <button type="button" id="open-full-album-btn" class="btn-primary" style="padding: 14px 28px; font-size: 1rem; border-radius: 30px; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 8px 24px rgba(225, 29, 72, 0.2);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span>Albüme Git (Tüm Anılarımız)</span>
+          <span class="album-badge" id="album-total-badge" style="background: rgba(255,255,255,0.25); padding: 2px 8px; border-radius: 12px; font-size: 0.82rem;">0</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION: LOVE DRAWING CANVAS (Birlikte Canlı Çizim)
+         ========================================================================== -->
+    <section id="draw-section" class="love-draw-section">
+      <div class="section-header">
+        <span class="section-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+          Aşk Tuvali
+        </span>
+        <h2 class="section-title">Aşk Tuvalimiz</h2>
+        <p class="section-subtitle">Birbirimize tatlı notlar, kalpler ve resimler çizelim...</p>
+      </div>
+
+      <!-- Drawing Board Container -->
+      <div class="draw-board-container" id="draw-board-container">
+        <!-- Floating Exit Fullscreen Button (Only appears when fullscreen is active) -->
+        <button type="button" id="draw-fullscreen-close-btn" class="draw-fullscreen-exit-btn" title="Tam Ekrandan Çık" aria-label="Tam Ekrandan Çık">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          <span>Tam Ekrandan Çık</span>
+        </button>
+
+        <!-- Canvas Frame -->
+        <div class="draw-canvas-wrapper" id="draw-canvas-wrapper" style="touch-action: none; -webkit-user-select: none; user-select: none;">
+          <canvas id="love-draw-canvas" width="900" height="675" style="touch-action: none; -webkit-user-select: none; user-select: none;"></canvas>
+
+          <!-- Sağ Üstte Yazısız Butonlar: Tam Ekran, Silgi, Geri Al & Temizle -->
+          <div class="draw-canvas-top-actions">
+            <button type="button" id="draw-fullscreen-btn" class="draw-canvas-icon-btn fullscreen" title="Tam Ekran Çizim Modu" aria-label="Tam Ekran">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+            </button>
+            <button type="button" id="draw-eraser-btn" class="draw-canvas-icon-btn eraser" title="Silgi Modu" aria-label="Silgi">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/></svg>
+            </button>
+            <button type="button" id="draw-undo-btn" class="draw-canvas-icon-btn" title="Geri Al" aria-label="Geri Al">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/></svg>
+            </button>
+            <button type="button" id="draw-clear-btn" class="draw-canvas-icon-btn clear" title="Tuvali Temizle" aria-label="Temizle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Drawing Controls & Toolbar (Tam ekranda yüzen hareketli palete dönüşür) -->
+        <div class="draw-toolbar" id="draw-toolbar">
+          <div class="palette-drag-handle" id="palette-drag-handle" title="Paleti sürükleyerek taşı">
+            <div class="palette-drag-grip">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="9" cy="6" r="1.5" fill="currentColor"/><circle cx="15" cy="6" r="1.5" fill="currentColor"/><circle cx="9" cy="12" r="1.5" fill="currentColor"/><circle cx="15" cy="12" r="1.5" fill="currentColor"/><circle cx="9" cy="18" r="1.5" fill="currentColor"/><circle cx="15" cy="18" r="1.5"/></svg>
+              <span>Aşk Paleti (Taşı)</span>
+            </div>
+            <div class="palette-handle-actions" style="display: flex; align-items: center; gap: 6px;">
+              <button type="button" id="palette-collapse-btn" class="palette-min-btn" title="Paleti Küçült / Genişlet">—</button>
+              <button type="button" id="palette-exit-btn" class="palette-exit-btn" title="Tam Ekrandan Çık">✕</button>
+            </div>
+          </div>
+          <!-- Color Palette -->
+          <div class="draw-tool-row">
+            <span class="tool-label">Renk:</span>
+            <div class="color-palette" id="draw-colors">
+              <button type="button" class="color-dot active" data-color="#ff477e" style="background:#ff477e;" title="Gül Pembesi"></button>
+              <button type="button" class="color-dot" data-color="#e11d48" style="background:#e11d48;" title="Aşk Kırmızısı"></button>
+              <button type="button" class="color-dot" data-color="#a855f7" style="background:#a855f7;" title="Romantik Mor"></button>
+              <button type="button" class="color-dot" data-color="#fbbf24" style="background:#fbbf24;" title="Işıltılı Sarı"></button>
+              <button type="button" class="color-dot" data-color="#38bdf8" style="background:#38bdf8;" title="Gökyüzü Mavisi"></button>
+              <button type="button" class="color-dot" data-color="#10b981" style="background:#10b981;" title="Zümrüt Yeşili"></button>
+              <button type="button" class="color-dot" data-color="#1e293b" style="background:#1e293b;" title="Gece Siyahı"></button>
+              <button type="button" class="color-dot" data-color="#ffffff" style="background:#ffffff; border:1px solid #cbd5e1;" title="Beyaz"></button>
+              <label class="color-picker-label" title="Özel Renk Seç">
+                <input type="color" id="draw-custom-color" value="#ff477e">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.5 17.5 2 12 2z"/></svg>
+              </label>
+            </div>
+          </div>
+
+          <!-- Brush Size & Eraser -->
+          <div class="draw-tool-row">
+            <span class="tool-label">Fırça:</span>
+            <div class="brush-size-group" id="draw-brush-sizes">
+              <button type="button" class="brush-size-btn" data-size="3" title="İnce">
+                <span class="size-dot dot-sm"></span>
+                <span>İnce</span>
+              </button>
+              <button type="button" class="brush-size-btn active" data-size="6" title="Orta">
+                <span class="size-dot dot-md"></span>
+                <span>Orta</span>
+              </button>
+              <button type="button" class="brush-size-btn" data-size="14" title="Kalın">
+                <span class="size-dot dot-lg"></span>
+                <span>Kalın</span>
+              </button>
+              <button type="button" class="brush-size-btn" data-size="28" title="Fosforlu">
+                <span class="size-dot dot-xl"></span>
+                <span>Geniş</span>
+              </button>
+            </div>
+            
+
+          </div>
+
+          <!-- Love Stickers / Stamps -->
+          <div class="draw-tool-row stamps-row">
+            <span class="tool-label">Damga:</span>
+            <div class="stamps-group" id="draw-stamps">
+              <button type="button" class="stamp-btn" data-stamp="assets/hearts/1.svg" title="Romantik Kalp 1">
+                <img src="assets/hearts/1.svg" alt="Kalp 1">
+              </button>
+              <button type="button" class="stamp-btn" data-stamp="assets/hearts/2.svg" title="Romantik Kalp 2">
+                <img src="assets/hearts/2.svg" alt="Kalp 2">
+              </button>
+              <button type="button" class="stamp-btn" data-stamp="assets/hearts/3.svg" title="Romantik Kalp 3">
+                <img src="assets/hearts/3.svg" alt="Kalp 3">
+              </button>
+              <button type="button" class="stamp-btn" data-stamp="assets/hearts/5.svg" title="Romantik Kalp 4">
+                <img src="assets/hearts/5.svg" alt="Kalp 4">
+              </button>
+              <button type="button" class="stamp-btn" data-stamp="assets/hearts/7.svg" title="Romantik Kalp 5">
+                <img src="assets/hearts/7.svg" alt="Kalp 5">
+              </button>
+              <button type="button" class="stamp-btn" data-stamp="assets/hearts/8.svg" title="Romantik Kalp 6">
+                <img src="assets/hearts/8.svg" alt="Kalp 6">
+              </button>
+              <button type="button" class="stamp-btn" data-stamp="assets/hearts/11.svg" title="Romantik Kalp 7">
+                <img src="assets/hearts/11.svg" alt="Kalp 7">
+              </button>
+              <button type="button" class="stamp-btn" data-stamp="assets/hearts/13.svg" title="Romantik Kalp 8">
+                <img src="assets/hearts/13.svg" alt="Kalp 8">
+              </button>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="draw-actions-bar">
+            <button type="button" id="draw-save-btn" class="draw-btn btn-primary" title="Çizimi Aşk Albümüne Kaydet" style="width:100%; justify-content:center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              <span>Aşk Albümüne Ekle</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 4: LOVE LETTER & ROMANTIC MUSIC PLAYER
+         ========================================================================== -->
+    <section id="letters">
+      <div class="section-header">
+        <span class="section-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Sadece Kalbine Özel
+        </span>
+        <h2 class="section-title">Mektubum & Melodimiz</h2>
+        <p class="section-subtitle">Sözcüklerin yetmediği yerde müziğin ve aşk mektubunun fısıltısı...</p>
+      </div>
+
+      <div class="letters-grid">
+        <!-- Interactive Wax Seal Envelope -->
+        <div id="envelope-card" class="envelope-card">
+          <div class="wax-seal">
+            <img src="assets/hearts/1.svg" alt="Wax Seal" class="wax-seal-img">
+          </div>
+          <h3 class="envelope-title">C&amp;E'ye Özel Aşk Mektubu</h3>
+          <p class="envelope-subtitle">Kırmızı balmumu mührü kırmak ve kalpten dökülen sözleri okumak için tıkla...</p>
+          <div class="envelope-action-btn">
+            <span>Mührü Aç ve Oku</span>
+          </div>
+        </div>
+
+        <!-- Spotify-style Romantic Mini Music Player -->
+        <div class="music-player-card">
+          <div class="player-header">
+            <div id="vinyl-record" class="vinyl-record">
+              <div class="vinyl-center">
+                <div class="vinyl-center-dot"></div>
+              </div>
+            </div>
+            <div class="player-info">
+              <span class="song-badge">Bizim Şarkımız</span>
+              <h3 class="song-title">Ay Tenli Kadın</h3>
+              <p class="song-artist">Ufuk Beydemir • C&amp;E'nin Şarkısı</p>
+            </div>
+          </div>
+
+          <div class="player-progress-wrap">
+            <div class="player-progress-bar">
+              <div id="player-progress-fill" class="player-progress-fill"></div>
+            </div>
+            <div class="player-times">
+              <span id="player-current-time">0:00</span>
+              <span id="player-total-time">3:16</span>
+            </div>
+          </div>
+
+          <div class="player-controls">
+            <button class="player-btn" type="button" title="Önceki">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+            </button>
+
+            <button id="player-play-btn" class="player-btn player-play-btn" type="button" title="Oynat / Durdur">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="margin-left: 2px;">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+            </button>
+
+            <button class="player-btn" type="button" title="Sonraki">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+            </button>
+          </div>
+
+          <!-- Standalone Playlist Link -->
+          <div style="display: flex; justify-content: center; margin-top: 14px; padding-top: 12px; border-top: 1px dashed rgba(225, 29, 72, 0.15);">
+            <a href="playlist.html" target="_blank" class="playlist-card-link-btn" title="Aşk Çalma Listemizi Aç (Spotify)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 11.5c3.5-1 7.5-.5 10 1"/><path d="M9 14.5c2.5-.7 5.5-.3 7.5.8"/><path d="M7.5 8.5c4-1.2 8.5-.6 11.5 1.2"/></svg>
+              <span>Aşk Çalma Listemizi Aç (Spotify)</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Love Quote Generator Jar -->
+      <div class="quote-generator-box">
+        <div id="quote-bubble" class="quote-bubble">
+          "Seninle geçen her an, hayatımın en güzel hediyesi..."
+        </div>
+        <button id="quote-btn" class="btn-primary" type="button" style="margin: 0 auto;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span>Bana Bir Aşk Sözü Fısılda</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 5: BUCKET LIST & OUR DREAMS
+         ========================================================================== -->
+    <section id="bucketlist">
+      <div class="section-header">
+        <span class="section-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Birlikte Büyüyen Hayaller
+        </span>
+        <h2 class="section-title">Bizim Dileklerimiz</h2>
+        <p class="section-subtitle">El ele verip gerçekleştireceğimiz, ömür boyu saklayacağımız ortak hayallerimiz... <span class="bucket-swipe-hint">↔️ Silmek için sağa veya sola kaydırabilirsiniz</span></p>
+      </div>
+
+      <div class="bucket-card">
+        <ul id="bucket-list" class="bucket-list">
+          <li class="bucket-item">
+            <div class="bucket-delete-backdrop">
+              <div class="delete-hint left">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+                <span>Sil</span>
+              </div>
+              <div class="delete-hint right">
+                <span>Sil</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+              </div>
+            </div>
+            <div class="bucket-item-surface">
+              <div class="bucket-checkbox">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <span class="bucket-text">Fransa'ya gitmek 🇫🇷</span>
+              <button type="button" class="bucket-quick-del-btn" title="Dileği sil" aria-label="Dileği sil">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+          </li>
+          <li class="bucket-item">
+            <div class="bucket-delete-backdrop">
+              <div class="delete-hint left">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+                <span>Sil</span>
+              </div>
+              <div class="delete-hint right">
+                <span>Sil</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+              </div>
+            </div>
+            <div class="bucket-item-surface">
+              <div class="bucket-checkbox">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <span class="bucket-text">İtalya'ya gitmek 🇮🇹</span>
+              <button type="button" class="bucket-quick-del-btn" title="Dileği sil" aria-label="Dileği sil">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+          </li>
+          <li class="bucket-item">
+            <div class="bucket-delete-backdrop">
+              <div class="delete-hint left">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+                <span>Sil</span>
+              </div>
+              <div class="delete-hint right">
+                <span>Sil</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+              </div>
+            </div>
+            <div class="bucket-item-surface">
+              <div class="bucket-checkbox">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <span class="bucket-text">Kuzey Işıklarını birlikte izlemek</span>
+              <button type="button" class="bucket-quick-del-btn" title="Dileği sil" aria-label="Dileği sil">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+          </li>
+          <li class="bucket-item">
+            <div class="bucket-delete-backdrop">
+              <div class="delete-hint left">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+                <span>Sil</span>
+              </div>
+              <div class="delete-hint right">
+                <span>Sil</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+              </div>
+            </div>
+            <div class="bucket-item-surface">
+              <div class="bucket-checkbox">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <span class="bucket-text">Birlikte doğada kamp yapmak</span>
+              <button type="button" class="bucket-quick-del-btn" title="Dileği sil" aria-label="Dileği sil">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+          </li>
+          <li class="bucket-item">
+            <div class="bucket-delete-backdrop">
+              <div class="delete-hint left">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+                <span>Sil</span>
+              </div>
+              <div class="delete-hint right">
+                <span>Sil</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+              </div>
+            </div>
+            <div class="bucket-item-surface">
+              <div class="bucket-checkbox">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <span class="bucket-text">İngiltere'ye gitmek 🇬🇧</span>
+              <button type="button" class="bucket-quick-del-btn" title="Dileği sil" aria-label="Dileği sil">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+          </li>
+        </ul>
+
+        <!-- Add New Dream Form -->
+        <form id="bucket-form" class="bucket-add-form">
+          <input 
+            type="text" 
+            id="bucket-input" 
+            class="bucket-input" 
+            placeholder="Yeni bir ortak hayalimiz ekle... (Örn: Birlikte gün batımını izlemek)"
+            required
+          >
+          <button type="submit" class="btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>Ekle</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <p>Sonsuza dek birlikte, her saniye daha çok... <span class="footer-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="#e11d48" style="vertical-align:middle; display:inline-block;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></span></p>
+      <p style="margin-top: 6px; font-size: 0.8rem; opacity: 0.7;">Ceylin &amp; Emre (C&amp;E) • 27.09.2026'dan Sonsuza...</p>
+    </footer>
+
+  </main>
+
+  <!-- Floating Pink Camera FAB Button (Sağ Alt Köşede Sadece Pembe Kamera) -->
+  <button id="mobile-sipsak-fab" class="mobile-sipsak-fab" type="button" title="Şipşak Fotoğraf" aria-label="Fotoğraf Çek">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+      <circle cx="12" cy="13" r="4"></circle>
+    </svg>
+  </button>
+
+  <!-- ==========================================================================
+       MODERN FLOATING BOTTOM NAVIGATION BAR
+       ========================================================================== -->
+  <div class="bottom-nav-container">
+    <nav class="bottom-nav">
+      <!-- 1. Hero / Home -->
+      <a href="#hero" class="nav-link active">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <span class="nav-label">Giriş</span>
+      </a>
+
+      <!-- 2. Anı Defteri -->
+      <a href="#diary" class="nav-link">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        </div>
+        <span class="nav-label">Anı Defteri</span>
+      </a>
+
+      <!-- 3. Photo Gallery -->
+      <a href="#gallery" class="nav-link">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <span class="nav-label">Anılar</span>
+      </a>
+
+      <!-- 4. Canlı Çizim Tuvali -->
+      <a href="#draw-section" class="nav-link">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+        </div>
+        <span class="nav-label">Çizim</span>
+      </a>
+
+      <!-- 5. Letters & Music -->
+      <a href="#letters" class="nav-link">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <span class="nav-label">Mektup</span>
+      </a>
+
+      <!-- 6. Dreams / Bucket List -->
+      <a href="#bucketlist" class="nav-link">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <span class="nav-label">Hayaller</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- ==========================================================================
+       MODALS
+       ========================================================================== -->
+
+  <!-- Face ID Verification & Enrollment Modal for Love Letter Wax Seal -->
+  <div id="face-id-modal" class="modal-overlay face-id-overlay">
+    <div class="face-id-box">
+      <button id="face-id-close-btn" class="modal-close-btn face-id-close" type="button" aria-label="Kapat">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <!-- Registered Profile Badge (Shows permanent Ceylin identification) -->
+      <div id="face-id-profile-pill" class="face-id-profile-pill" style="display:inline-flex;">
+        <img id="face-id-profile-avatar" class="face-id-profile-avatar" src="assets/images/photo2.jpg" alt="Ceylin">
+        <span class="face-id-profile-text">Mühür Sahibi: <strong>Ceylin</strong></span>
+      </div>
+
+      <div class="face-id-header">
+        <div class="face-id-lock-icon-wrap" id="face-id-lock-icon-wrap">
+          <svg class="face-id-lock-icon" id="face-id-lock-svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path id="face-id-lock-shackle" d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <h2 class="face-id-title" id="face-id-title">Face ID ile Mührü Aç</h2>
+        <p class="face-id-subtitle" id="face-id-subtitle">Bu mektup sadece Ceylin'in gözlerine mühürlendi. Lütfen yüzünü kameraya göster sevgilim...</p>
+      </div>
+
+      <!-- Face ID Circular/Squircle Viewport -->
+      <div class="face-id-scanner-wrap" id="face-id-scanner-wrap">
+        <!-- Live Camera Stream -->
+        <video id="face-id-video" class="face-id-video" autoplay playsinline muted></video>
+        <canvas id="face-id-canvas" class="face-id-canvas" style="display:none;"></canvas>
+
+        <!-- Simulated Avatar Fallback when camera is not permitted -->
+        <div id="face-id-fallback-avatar" class="face-id-fallback-avatar" style="display:none;">
+          <div class="face-id-avatar-circle">
+            <span class="face-id-avatar-emoji"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+          </div>
+        </div>
+
+        <!-- Biometric Scan Bracket Corners -->
+        <div class="face-id-brackets" id="face-id-brackets">
+          <span class="bracket top-left"></span>
+          <span class="bracket top-right"></span>
+          <span class="bracket bottom-left"></span>
+          <span class="bracket bottom-right"></span>
+        </div>
+
+        <!-- Laser Scanner Bar -->
+        <div class="face-id-laser" id="face-id-laser"></div>
+
+        <!-- Biometric Mesh Points -->
+        <div class="face-id-mesh" id="face-id-mesh">
+          <span class="mesh-dot dot-eye-left"></span>
+          <span class="mesh-dot dot-eye-right"></span>
+          <span class="mesh-dot dot-nose"></span>
+          <span class="mesh-dot dot-smile"></span>
+        </div>
+
+        <!-- Success Verification Checkmark Badge -->
+        <div class="face-id-success-badge" id="face-id-success-badge">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+
+        <!-- Mismatch Badge for foreign face / stranger -->
+        <div class="face-id-mismatch-badge" id="face-id-mismatch-badge">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Real-time Scan Status Info -->
+      <div class="face-id-status-wrap">
+        <div class="face-id-status-text" id="face-id-status-text">Kamera açılıyor... Yüz taranıyor</div>
+        <div class="face-id-progress-bar">
+          <div class="face-id-progress-fill" id="face-id-progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- Mismatch Retry Action (shown when stranger/user face is detected during verify) -->
+      <div id="face-id-mismatch-actions" class="face-id-mismatch-actions" style="display:none;">
+        <button type="button" id="face-id-retry-btn" class="face-id-action-btn btn-retry">
+          <span>Tekrar Dene (Ceylin Kameraya Baksın)</span>
+        </button>
+      </div>
+
+      <!-- Quick Face ID Update & Re-enroll Controls for Ceylin -->
+      <div class="face-id-extra-actions" style="display:flex; justify-content:center; gap:8px; margin-top:12px; flex-wrap:wrap;">
+        <button type="button" id="face-id-update-camera-btn" class="face-id-pill-btn" title="Kameradaki yüzü Ceylin'in yeni Face ID'si olarak kaydeder">
+          <span>📸 Yüzümü Yenile / Güncelle</span>
+        </button>
+        <button type="button" id="face-id-update-file-btn" class="face-id-pill-btn" title="Galeriden bir fotoğraf seçerek yüzü güncelle">
+          <span>🖼️ Fotoğraftan Güncelle</span>
+        </button>
+        <input type="file" id="face-id-photo-input" accept="image/*" style="display:none;">
+      </div>
+
+      <!-- Alternative Passcode Bypass (24042008) -->
+      <button type="button" id="face-id-passcode-btn" class="face-id-passcode-btn" style="margin-top:10px;">
+        <span>Veya şifre ile mührü aç</span>
+      </button>
+
+      <!-- Inline Passcode Box inside Face ID Modal -->
+      <div id="face-id-passcode-wrap" class="face-id-passcode-wrap" style="display:none; margin-top: 14px; width: 100%;">
+        <div style="display:flex; gap:8px; width:100%; max-width:280px; margin:0 auto;">
+          <input type="password" id="face-id-pin-input" maxlength="8" placeholder="Aşk şifremiz..." style="flex:1; padding:10px 14px; border-radius:12px; border:1.5px solid rgba(225,29,72,0.4); background:rgba(255,255,255,0.95); font-size:0.95rem; text-align:center; outline:none; color:#1f2937;">
+          <button type="button" id="face-id-pin-submit" class="btn-primary" style="padding:0 16px; border-radius:12px; font-size:0.9rem; cursor:pointer;">Aç</button>
+        </div>
+        <div id="face-id-pin-error" style="display:none; color:#f43f5e; font-size:0.8rem; margin-top:6px; text-align:center;">Hatalı şifre bir tanem!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- iOS / iPhone PWA Add to Home Screen Instructions Modal -->
+  <div id="ios-pwa-modal" class="modal-overlay">
+    <div class="letter-modal-box" style="max-width: 420px; text-align: center; padding: 28px 22px;">
+      <button id="ios-pwa-close-btn" class="modal-close-btn" type="button" aria-label="Kapat">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div style="width:68px; height:68px; border-radius:20px; margin:0 auto 16px; overflow:hidden; box-shadow:0 8px 20px rgba(244,63,94,0.3); border:2px solid #ffffff;">
+        <img src="assets/icon-180.png" alt="C&amp;E Günlüğü" style="width:100%; height:100%; object-fit:cover;">
+      </div>
+      <h3 style="font-family:var(--font-serif); font-size:1.35rem; color:var(--text-dark); margin-bottom:8px;">iPhone'a Uygulama Olarak Ekle</h3>
+      <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.5; margin-bottom:18px;">
+        Ceylin &amp; Emre Günlüğü'nü iPhone ana ekranınıza ekleyerek tam ekran, pürüzsüz ve tıpkı App Store uygulaması gibi kullanabilirsiniz!
+      </p>
+      <div style="background:rgba(244,63,94,0.06); border:1px dashed rgba(244,63,94,0.3); border-radius:16px; padding:14px; text-align:left; margin-bottom:20px; font-size:0.86rem; line-height:1.55; color:#1f2937;">
+        <div style="display:flex; gap:10px; margin-bottom:10px; align-items:flex-start;">
+          <span style="background:var(--primary); color:#fff; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.75rem; flex-shrink:0;">1</span>
+          <span>Safari'nin altındaki <strong>Paylaş</strong> (<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.4" style="vertical-align:middle; display:inline-block;"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>) simgesine dokunun.</span>
+        </div>
+        <div style="display:flex; gap:10px; margin-bottom:10px; align-items:flex-start;">
+          <span style="background:var(--primary); color:#fff; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.75rem; flex-shrink:0;">2</span>
+          <span>Menüden <strong>"Ana Ekrana Ekle"</strong> (+ simgeli) seçeneğine dokunun.</span>
+        </div>
+        <div style="display:flex; gap:10px; align-items:flex-start;">
+          <span style="background:var(--primary); color:#fff; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.75rem; flex-shrink:0;">3</span>
+          <span>Sağ üstteki <strong>"Ekle"</strong> butonuna basın. Uygulamamız ana ekranınızda hazır! 💕</span>
+        </div>
+      </div>
+      <button type="button" id="ios-pwa-gotit-btn" class="btn-primary" style="width:100%; justify-content:center; padding:12px;">
+        <span>Harika, Anladım!</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 1. Love Letter Modal -->
+  <div id="letter-modal" class="modal-overlay">
+    <div class="letter-modal-box">
+      <button id="letter-modal-close" class="modal-close-btn" type="button" aria-label="Kapat">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <h2 class="letter-heading">Canım Ceylin'im,</h2>
+      <div class="letter-body">
+        <p>Bazen hayat karmaşıklaşır, günler telaşla geçer. Ama kalbimin durduğu ve derin bir nefes aldığı tek yer senin yanın...</p>
+        <br>
+        <p>Seni ilk tanıdığım günden bu yana, dünyamı öyle güzel renklere boyadın ki, sensiz geçen zamanların bile bir anlamı kalmadı. Gülüşün bana güç, gözlerin huzur veriyor.</p>
+        <br>
+        <p>İyi ki hayatımdasın, iyi ki elimi tutuyorsun. Beraber biriktirdiğimiz bu anılar sadece bir başlangıç. Önümüzde yaşanacak binlerce güzel gün, gülünecek yüzlerce anı var.</p>
+      </div>
+
+      <div class="letter-sign">
+        Seni Sonsuza Dek Seven Emre'n...
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Photo Lightbox Modal -->
+  <div id="lightbox-modal" class="modal-overlay">
+    <div class="lightbox-modal">
+      <button id="lightbox-close" class="modal-close-btn" type="button" aria-label="Kapat">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="lightbox-img-wrap">
+        <button type="button" id="lightbox-prev-btn" class="lightbox-nav-btn prev" aria-label="Önceki Fotoğraf" style="display:none;">❮</button>
+        <img id="lightbox-img" src="" alt="Büyük Görsel">
+        <button type="button" id="lightbox-next-btn" class="lightbox-nav-btn next" aria-label="Sonraki Fotoğraf" style="display:none;">❯</button>
+      </div>
+      <div id="lightbox-dots" class="lightbox-dots"></div>
+      <div id="lightbox-date" class="lightbox-date" style="font-size:0.92rem; color:rgba(255,255,255,0.85); margin-top:8px; font-weight:600; letter-spacing:0.5px;"></div>
+      <div id="lightbox-caption" class="lightbox-caption"></div>
+
+      <!-- Actions under the photo (Fotoğrafı Değiştir, Düzenle & Sil) -->
+      <div class="lightbox-actions-bar">
+        <button type="button" id="lightbox-change-btn" class="lightbox-btn-change" title="Bu fotoğrafı değiştir">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          <span>Fotoğrafı Değiştir</span>
+        </button>
+        <button type="button" id="lightbox-edit-caption-btn" class="lightbox-btn-edit" title="Fotoğrafın altındaki notu düzenle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          <span>Notu Düzenle</span>
+        </button>
+        <button type="button" id="lightbox-del-btn" class="lightbox-btn-del" title="Bu anıyı sil" style="color:#e11d48; margin-left:auto;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          <span>Sil</span>
+        </button>
+      </div>
+
+      <!-- Feedback toast notification -->
+      <div id="lightbox-toast" class="lightbox-toast">Fotoğraf başarıyla güncellendi!</div>
+
+      <!-- Hidden file input for replacing active photo -->
+      <input type="file" id="lightbox-file-input" accept="image/*" style="display:none;">
+    </div>
+  </div>
+
+  <!-- 3. Add New Diary Entry Modal -->
+  <div id="diary-modal" class="modal-overlay">
+    <div class="letter-modal-box" style="max-width: 520px;">
+      <button id="diary-modal-close" class="modal-close-btn" type="button" aria-label="Kapat">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <h2 class="letter-heading" style="font-size: 1.6rem; margin-bottom: 16px;">Yeni Bir Anı Yaz</h2>
+      <form id="diary-form">
+        <div style="margin-bottom: 14px;">
+          <label style="display:block; font-size:0.85rem; font-weight:600; color:var(--text-muted); margin-bottom:6px;">Anı Başlığı</label>
+          <input type="text" id="diary-input-title" class="bucket-input" style="width:100%;" placeholder="Örn: Birlikte izlediğimiz o film..." required>
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label style="display:block; font-size:0.85rem; font-weight:600; color:var(--text-muted); margin-bottom:6px;">Tarih / Etiket</label>
+          <input type="text" id="diary-input-date" class="bucket-input" style="width:100%;" placeholder="Örn: 15 Ekim 2024 veya 'Özel Bir Akşam'">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label style="display:block; font-size:0.85rem; font-weight:600; color:var(--text-muted); margin-bottom:6px;">Anının Hikayesi</label>
+          <textarea id="diary-input-text" class="bucket-input" style="width:100%; min-height:120px; resize:vertical;" placeholder="O gün hissettiklerini ve anınızı buraya yaz..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          <span>Günlüğe Kaydet</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. Read Diary Entry Detail Modal -->
+  <div id="diary-read-modal" class="modal-overlay">
+    <div class="letter-modal-box">
+      <button id="diary-read-modal-close" class="modal-close-btn" type="button" aria-label="Kapat">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <span id="diary-read-date" class="diary-date" style="display:inline-block; margin-bottom:12px;"></span>
+      <h2 id="diary-read-title" class="letter-heading" style="text-align:left; margin-bottom:16px;"></h2>
+      <div id="diary-read-body" class="letter-body" style="font-size:1.4rem;"></div>
+      <div class="letter-sign" style="font-size:1.4rem;">
+        Ceylin &amp; Emre (C&amp;E)
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Notebook Table of Contents (İçindekiler & Geçmiş) Modal -->
+  <div id="notebook-toc-modal" class="modal-overlay">
+    <div class="toc-modal-box">
+      <button id="notebook-toc-close" class="modal-close-btn" type="button" aria-label="Kapat" onclick="window.closeTableOfContents && window.closeTableOfContents(event)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <div class="toc-modal-header">
+        <span class="toc-header-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+        <div>
+          <h2 class="letter-heading" style="text-align:left; margin-bottom:2px; font-size:1.55rem;">Defter Geçmişi (İçindekiler)</h2>
+          <p style="font-size:0.86rem; color:var(--text-muted); font-family:var(--font-sans);">Geçmişte yazdığımız tüm sayfalar burada saklanır. Bir güne dokunarak defteri o sayfaya açabilirsin</p>
+        </div>
+      </div>
+
+      <!-- Quick Search / Filter Input -->
+      <div class="toc-search-container">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="toc-search-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input 
+          type="text" 
+          id="toc-search-input" 
+          class="toc-search-field" 
+          placeholder="Geçmiş sayfalarda ara... (Örn: kahve, ilk gün, doğum günü, deniz...)"
+        >
+      </div>
+
+      <!-- Scrollable List of Notebook Pages -->
+      <div id="toc-list-container" class="toc-list-wrap">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Add New Memory Modal -->
+  <div id="add-memory-modal" class="modal-overlay">
+    <div class="letter-modal-box" style="max-width: 520px;">
+      <button id="add-memory-close" class="modal-close-btn" type="button" aria-label="Kapat">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:18px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        <div>
+          <h2 class="letter-heading" style="text-align:left; margin-bottom:2px; font-size:1.5rem;">Yeni Bir Anı Ekle</h2>
+          <p style="font-size:0.85rem; color:var(--text-muted); font-family:var(--font-sans);">Fotoğrafını seç ve altına hissettiklerini yaz</p>
+        </div>
+      </div>
+
+      <form id="add-memory-form">
+        <!-- Photo Dropzone / Picker (Birden fazla fotoğraf eklenebilir) -->
+        <div id="memory-dropzone" class="image-upload-dropzone">
+          <input type="file" id="memory-file-input" accept="image/*" multiple style="display: none;">
+          <div id="memory-upload-placeholder" class="image-upload-placeholder">
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span style="font-size:0.95rem; font-weight:600; color:var(--text-dark);">Fotoğraf(lar) Seçmek İçin Dokun</span>
+            <span style="font-size:0.78rem; color:var(--text-muted);">Tek seferde bir veya birden fazla fotoğraf seçebilirsin</span>
+          </div>
+          <img id="memory-preview-img" class="image-upload-preview" alt="Seçilen Fotoğraf">
+        </div>
+        <!-- Çoklu Seçilen Fotoğrafların Önizleme Şeridi -->
+        <div id="memory-multi-preview-strip" class="memory-multi-preview-strip" style="display:none;"></div>
+
+        <!-- Caption input (Underneath the photo) -->
+        <div style="margin-bottom: 14px;">
+          <label style="display:block; font-size:0.85rem; font-weight:600; color:var(--text-muted); margin-bottom:6px;">Fotoğrafın Altına Yazılacak Not</label>
+          <input 
+            type="text" 
+            id="memory-caption-input" 
+            class="bucket-input" 
+            style="width:100%; font-family:var(--font-handwriting); font-size:1.4rem;" 
+            placeholder="Örn: Birlikte ilk kahve molamız veya O günkü sıcacık gülüşün..." 
+            required
+          >
+        </div>
+
+        <!-- Date Picker (Günün Tarihi Varsayılan, Değiştirilebilir) -->
+        <div style="margin-bottom: 14px;">
+          <label style="display:block; font-size:0.85rem; font-weight:600; color:var(--text-muted); margin-bottom:6px;">Fotoğrafın Tarihi (Değiştirilebilir)</label>
+          <input 
+            type="date" 
+            id="memory-date-input" 
+            class="bucket-input" 
+            style="width:100%; font-family:var(--font-sans); font-size:0.95rem; padding:10px 14px;"
+          >
+        </div>
+
+        <!-- Date / Tag input (Optional) -->
+        <div style="margin-bottom: 20px;">
+          <label style="display:block; font-size:0.85rem; font-weight:600; color:var(--text-muted); margin-bottom:6px;">Özel Anı Etiketi (İsteğe bağlı)</label>
+          <input 
+            type="text" 
+            id="memory-tag-input" 
+            class="bucket-input" 
+            style="width:100%;" 
+            placeholder="Örn: #BizimAnımız veya İlk Tatilimiz"
+          >
+        </div>
+
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          <span>Anıyı Albüme Ekle</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 7. Şipşak Album & Instant Gallery Modal (Sağdaki Pembe Butona Basınca Açılır) -->
+  <div id="sipsak-album-modal" class="modal-overlay">
+    <div class="sipsak-album-box">
+      <button id="sipsak-album-close" class="modal-close-btn" type="button" aria-label="Kapat">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <div class="sipsak-album-header">
+        <span class="sipsak-album-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>
+        <div>
+          <h2 class="letter-heading" style="text-align:left; margin-bottom:0; font-size:1.55rem;">Şipşak Anılarımız</h2>
+        </div>
+      </div>
+
+      <!-- Quick Action: Yeni Şipşak Çek Butonu -->
+      <div class="sipsak-album-action-wrap">
+        <button type="button" id="sipsak-action-snap-btn" class="sipsak-big-snap-btn">
+          <div class="snap-icon-circle">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </div>
+          <div class="snap-btn-text">
+            <strong>Yeni Şipşak Çek</strong>
+          </div>
+        </button>
+      </div>
+
+      <!-- Dedicated Grid for Şipşak Polaroids -->
+      <div class="sipsak-album-scroll">
+        <div id="sipsak-grid" class="sipsak-grid">
+          <!-- Rendered dynamically from ce_sipsak_album_v1 & CloudSync -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Şipşak Direct Camera Viewfinder Modal -->
+  <div id="sipsak-modal" class="modal-overlay sipsak-overlay">
+    <div class="sipsak-viewfinder-box">
+      <!-- Camera View Header -->
+      <div class="sipsak-viewfinder-header">
+        <button id="sipsak-flip-cam-btn" class="sipsak-circle-btn" type="button" title="Kamerayı Çevir (Ön / Arka)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        </button>
+        <button id="sipsak-mirror-btn" class="sipsak-circle-btn active" type="button" title="Selfie Yansıtma / Ayna Modu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v18"/><path d="M16 7l4 4-4 4"/><path d="M8 7l-4 4 4 4"/></svg>
+        </button>
+        <div class="sipsak-header-badge">
+          <span class="sipsak-dot-rec"></span>
+          <span>Şipşak Canlı Kamera</span>
+        </div>
+        <button id="sipsak-close-btn" class="sipsak-circle-btn close" type="button" aria-label="Kapat">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Live Video Viewport -->
+      <div class="sipsak-camera-viewport" id="sipsak-camera-viewport">
+        <video id="sipsak-live-video" class="sipsak-live-video" autoplay playsinline webkit-playsinline muted></video>
+        <div id="sipsak-flash" class="sipsak-flash-screen"></div>
+
+        <!-- Camera Brackets / Viewfinder Grid -->
+        <div class="sipsak-viewfinder-grid">
+          <span class="viewfinder-corner tl"></span>
+          <span class="viewfinder-corner tr"></span>
+          <span class="viewfinder-corner bl"></span>
+          <span class="viewfinder-corner br"></span>
+          <div class="viewfinder-crosshair">+</div>
+        </div>
+
+        <!-- Camera Permission Fallback (shown if camera is blocked by user) -->
+        <div id="sipsak-camera-fallback" class="sipsak-camera-fallback" style="display:none;">
+          <div class="sipsak-fallback-card">
+            <span style="display:block; margin-bottom:12px;"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>
+            <h4>Kamera Başlatılıyor...</h4>
+            <p>Canlı önizleme açılamadıysa telefon kamerasını doğrudan açıp tek dokunuşla çekebilirsiniz:</p>
+            <button type="button" id="sipsak-fallback-launch-btn" class="sipsak-fallback-btn">
+              <span>Telefon Kamerasını Aç</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Developing Instant Polaroid Overlay (Shows for 1.8s when snapped) -->
+      <div id="sipsak-developing-view" class="sipsak-developing-view" style="display:none;">
+        <div class="sipsak-polaroid-frame-dev">
+          <div class="sipsak-polaroid-img-box">
+            <img id="sipsak-dev-img" src="" alt="Şipşak Fotoğraf" class="sipsak-film-photo">
+            <span class="sipsak-dev-badge">Şipşak Kaydedildi</span>
+          </div>
+          <div class="sipsak-polaroid-bottom">
+            <span id="sipsak-dev-stamp" class="sipsak-stamp-text">1 Kasım 2026 • 14:15</span>
+          </div>
+        </div>
+        <div class="sipsak-dev-status">
+          <span class="sipsak-check-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <strong>Anında Kaydedildi!</strong>
+        </div>
+      </div>
+
+      <!-- Shutter Controls Bar -->
+      <div class="sipsak-shutter-bar" id="sipsak-shutter-bar">
+        <div class="shutter-hint">Dokunduğun an çeker ve kaydeder</div>
+        <div class="shutter-btn-wrap">
+          <!-- Quick button for native camera -->
+          <button type="button" id="sipsak-native-btn" class="sipsak-mini-action-btn" title="Telefon Kamerasını Aç">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            <span>Normal Kamera</span>
+          </button>
+
+          <!-- Main Shutter Button -->
+          <button type="button" id="sipsak-shutter-btn" class="sipsak-big-shutter" aria-label="Şipşak Fotoğrafı Çek">
+            <div class="shutter-ring">
+              <div class="shutter-core"></div>
+            </div>
+          </button>
+
+          <!-- Flip camera button on bottom bar -->
+          <button type="button" id="sipsak-flip-bottom-btn" class="sipsak-mini-action-btn" title="Kamerayı Çevir">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            <span>Çevir</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Hidden direct mobile camera input (100% reliable fallback) -->
+      <input type="file" id="sipsak-direct-input" accept="image/*" capture="environment" style="display:none;">
+    </div>
+  </div>
+
+  <!-- Sipsak Photo Lightbox Modal (For viewing saved sipsaks enlarged) -->
+  <div id="sipsak-lightbox-modal" class="modal-overlay">
+    <div class="sipsak-lightbox-box">
+      <button id="sipsak-lightbox-close" class="modal-close-btn" type="button" aria-label="Kapat">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="sipsak-lightbox-polaroid">
+        <div class="sipsak-lightbox-img-wrap">
+          <img id="sipsak-lightbox-img" src="" alt="Şipşak Fotoğraf">
+        </div>
+        <div class="sipsak-lightbox-footer">
+          <span id="sipsak-lightbox-stamp" class="sipsak-lightbox-stamp"></span>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="sipsak-lightbox-tag">Spontane Anımız</span>
+            <button type="button" id="sipsak-lightbox-del-btn" class="sipsak-lightbox-del-btn" title="Bu Şipşakı Sil" aria-label="Sil">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Draw Clear Confirmation Modal (Modern & Romantic) -->
+  <div id="draw-clear-modal" class="modal-overlay">
+    <div class="confirm-dialog-box">
+      <div class="confirm-dialog-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+          <line x1="10" y1="11" x2="10" y2="17"/>
+          <line x1="14" y1="11" x2="14" y2="17"/>
+        </svg>
+      </div>
+      <h3 class="confirm-dialog-title">Aşk Tuvalini Temizle</h3>
+      <p class="confirm-dialog-desc">Tuvaldeki tüm çizimleri ve damgaları silmek istediğine emin misin bir tanem? Bu işlem tuvali tertemiz yapar.</p>
+      <div class="confirm-dialog-actions">
+        <button type="button" id="draw-clear-cancel-btn" class="confirm-btn-cancel">Vazgeç</button>
+        <button type="button" id="draw-clear-confirm-btn" class="confirm-btn-danger">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          <span>Evet, Temizle</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full Album Modal (Albüme Git - Tüm Anılarımız 4'lü Izgarada) -->
+  <div id="full-album-modal" class="modal-overlay full-album-overlay">
+    <div class="full-album-box">
+      <div class="full-album-header">
+        <div class="full-album-title-group">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <h2 class="letter-heading" style="margin-bottom:0; font-size:1.55rem; text-align:left;">Fotoğraf Albümümüz</h2>
+          <span class="full-album-badge" id="full-album-count-badge">0 Anı</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <button type="button" id="full-album-add-btn" class="btn-primary" style="padding: 8px 18px; font-size:0.88rem; border-radius:20px;">
+            + Yeni Fotoğraf Ekle
+          </button>
+          <button id="full-album-close" class="modal-close-btn" type="button" aria-label="Kapat">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="full-album-scroll">
+        <div id="full-album-grid" class="full-album-grid">
+          <!-- Populated dynamically with all memories: 4 polaroids per row on desktop -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Diary Note Modal (Özel Hatıra Notunu Düzenle) -->
+  <div id="diary-edit-modal" class="modal-overlay">
+    <div class="letter-modal-box" style="max-width: 520px;">
+      <button id="diary-edit-modal-close" class="modal-close-btn" type="button" aria-label="Kapat">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        <h2 class="letter-heading" style="margin-bottom:0; font-size: 1.5rem; text-align:left;">Özel Hatıra Notunu Düzenle</h2>
+      </div>
+      <form id="diary-edit-form">
+        <input type="hidden" id="diary-edit-id">
+        <div style="margin-bottom: 14px;">
+          <label style="display:block; font-size:0.85rem; font-weight:600; color:var(--text-muted); margin-bottom:6px;">Başlık</label>
+          <input type="text" id="diary-edit-title" class="bucket-input" style="width:100%;" required>
+        </div>
+        <div style="margin-bottom: 18px;">
+          <label style="display:block; font-size:0.85rem; font-weight:600; color:var(--text-muted); margin-bottom:6px;">Anı Notumuz</label>
+          <textarea id="diary-edit-text" class="bucket-input" style="width:100%; min-height:120px; font-family:var(--font-sans); line-height:1.6;" required></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+          <span>Değişiklikleri Kaydet</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Protected Content Toast (Prevent Copy & Save As) -->
+  <div id="protected-toast" class="protected-toast" role="alert" aria-live="polite">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+    <span id="protected-toast-text">Bu anılar ve fotoğraflar sadece Ceylin &amp; Emre'ye özeldir, kopyalanamaz.</span>
+  </div>
+
+  <!-- Cloud Sync Toast -->
+  <div id="sync-toast" class="sync-toast" role="alert" aria-live="polite">
+    <span class="live-dot pulse"></span>
+    <span id="sync-toast-text">Buluttan yeni anılar senkronize edildi.</span>
+  </div>
+
+  <!-- Application Scripts -->
+  <script src="js/peerjs.min.js" defer></script>
+  <script src="js/face-api.min.js" defer></script>
+  <script src="js/hearts.js?v=5.0" defer></script>
+  <script src="js/app.js?v=5.0" defer></script>
+
+  <!-- PWA Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

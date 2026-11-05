@@ -1,0 +1,24 @@
+{
+  "name": "ceylin_project",
+  "version": "1.0.0",
+  "description": "Ceylin ve Emre için özel olarak tasarlanmış, modern ve aşk temalı tek sayfa (SPA) günlük web sitesi.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yes526-tech/ceylin-emre-gunlugu.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Yes526-tech/ceylin-emre-gunlugu/issues"
+  },
+  "homepage": "https://github.com/Yes526-tech/ceylin-emre-gunlugu#readme",
+  "dependencies": {
+    "@netlify/blobs": "^11.1.7"
+  }
+}

@@ -1,0 +1,8 @@
+.DS_Store
+Thumbs.db
+free-handrawn-heart/
+vecteezy_valentines-day-vector-design-element-set-isolated-on-a-white_16188091.svg
+
+# Local Netlify folder
+.netlify
+node_modules/
